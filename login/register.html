@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title> Transparent Login Form Design </title>
+	<link rel="stylesheet" type="text/css" href="form-style.css">
+</head>
+	<body>
+	<div class="login-box" style="width: 400px;	height: 530px;">
+	<img src="avatar.png" class="avatar" alt="">
+	<h1>Login Here</h1>
+		<form method="post">
+		<p>Username</p>
+		<input type="text" name="username" placeholder="Enter Username" required>
+		<p>Email</p>
+		<input type="email" name="email" placeholder="Your Email" required>
+		<p>Password <span style="font-weight: normal;">(At least 8 Characters)</span></p>
+		<input type="password" name="password" minlength="8" maxlength="50" placeholder="Enter Password" required>
+		<input type="password" name="password_again" minlength="8" maxlength="50" placeholder="Re-enter Password" required>
+		<input type="submit" name="submit" value="Register">
+		<a href="login.html">Already have an account?</a><br>
+		<span class="login-text">
+		</span>
+		</form>
+	</div>
+</body>
+</html>
