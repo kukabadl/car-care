@@ -4,14 +4,12 @@
                <meta charset="utf-8">
                <title>Login</title>
                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-               <script type='text/javascript' src='config.js'></script>
                <link rel="stylesheet" type="text/css" href="form-style.css">
        </head>
 
  <body>
        <?php
                // define variables and set to empty values
-
                $username = $passwd = "";
 
                if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -28,52 +26,53 @@
                }
 
                function checkPassword($usr, $psd){
-               $ini = parse_ini_file('app.ini');
+                 if (file_exists("config.php")){
+                    include('config.php');
+                    // Create connection
+                    /*echo $dbname;
+                    echo $username;
+                    echo $password;
+                    echo "$servername";*/
+                    $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+                    // Check connection
+                    if (!$conn) {
+                        die("Connection failed: " . mysqli_connect_error());
+                    }
 
-               //import servername, dbname, username and 
-               $servername = $ini['DB_SERVERNAME'];
-               $dbname = $ini['DB_NAME'];
-               $username = $ini['DB_USERNAME'];
-               $password = $ini['DB_PASSWORD'];
+                    $sql = "SELECT password FROM users WHERE username='"."$usr"."';";
+                    $result = mysqli_query($conn, $sql);
 
-               // Create connection
-               $conn = mysqli_connect($servername, $username, $password, $dbname);
-               // Check connection
-               if (!$conn) {
-                   die("Connection failed: " . mysqli_connect_error());
-               }
+                    if (mysqli_num_rows($result) > 0) {
+                        // output data of each row
+                        while($row = mysqli_fetch_assoc($result)) {
+                            $hashed = $row["password"];
+                        }
+                    } else {
+                        echo '<script>
+                        $(document).ready(function(){
+                          $("span:nth-of-type(1)").show();
+                        });
+                        </script>';
+                    }
+                    if (password_verify($psd, $hashed)){
+                        echo "Correct password!";
+                      }
 
-               $sql = "SELECT password FROM users WHERE username='"."$usr"."';";
-               $result = mysqli_query($conn, $sql);
-
-               if (mysqli_num_rows($result) > 0) {
-                   // output data of each row
-                   while($row = mysqli_fetch_assoc($result)) {
-                       $hashed = $row["password"];
-                   }
-               } else {
-                   echo '<script>
-                   $(document).ready(function(){
-                     $("span:nth-of-type(1)").show();
-                   });
-                   </script>';
-               }
-               if (password_verify($psd, $hashed)){
-                   echo "Correct password!";
+                    else {
+                            echo "Incorrect password";
+                            echo '<script>
+                            $(document).ready(function(){
+                              $("span:nth-of-type(2)").show();
+                            });
+                            </script>';
+                    }
+                            mysqli_close($conn);
+                    }
+                    else {
+                      echo "Invalid configuration file.";
+                    }
                  }
-
-               else {
-                       echo "Incorrect password";
-                       echo '<script>
-                       $(document).ready(function(){
-                         $("span:nth-of-type(2)").show();
-                       });
-                       </script>';
-               }
-                       mysqli_close($conn);
-               }
-       ?>
-
+                 ?>
        <script>
        $(document).ready(function(){
          $("span").hide();
