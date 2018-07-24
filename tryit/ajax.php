@@ -27,12 +27,12 @@
 
                function checkPassword($usr, $psd){
                  if (file_exists("config.php")){
-                    include('config.php');
+                    $execute = `config.php`;
                     // Create connection
-                    /*echo $dbname;
+                    echo $dbname;
                     echo $username;
                     echo $password;
-                    echo "$servername";*/
+                    echo $servername;
                     $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
                     // Check connection
                     if (!$conn) {
